@@ -1,0 +1,578 @@
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #f7f7f7;
+  padding: 20px;
+}
+h1 { color: #0055aa; }
+textarea {
+  width: 80%;
+  height: 100px;
+  margin-top: 10px;
+}
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  background: #008cff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#question, #result {
+  background: white;
+  margin: 20px auto;
+  padding: 15px;
+  width: 80%;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+/* Sửa lỗi font chữ bị sai trong form */
+input, select, textarea, button {
+  font-family: inherit;
+  font-size: 16px; 
+}
+/* Làm đẹp phần kết quả chấm điểm */
+#result {
+  background: #1e1e2e;              /* Nền tối để nổi bật nội dung */
+  color: #f5f5f5;                   /* Chữ sáng, dễ đọc */
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 20px;
+  line-height: 1.6;                 /* Giãn dòng cho dễ nhìn */
+  font-size: 16px;
+  white-space: pre-line;            /* Giữ nguyên khoảng cách dòng do AI tạo */
+  text-align: left;                 /* Căn chữ sang trái */
+  max-height: 400px;                /* Giới hạn chiều cao */
+  overflow-y: auto;                 /* Nếu quá dài thì có thanh cuộn */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Làm nổi bật chữ in đậm bên trong */
+#result b {
+  color: #00c3ff;
+}
+
+/* Thanh cuộn mềm mại */
+#result::-webkit-scrollbar {
+  width: 8px;
+}
+#result::-webkit-scrollbar-thumb {
+  background: #00c3ff;
+  border-radius: 10px;
+}
+
+/* Tiêu đề phần kết quả */
+.result-title {
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 2px solid #00c3ff;
+  margin-bottom: 10px;
+  display: inline-block;
+}
+/* Giúp xuống hàng đẹp trong phần đề bài */
+#question {
+  white-space: pre-line; /* Giữ nguyên ngắt dòng từ AI */
+  line-height: 1.6;      /* Giãn dòng cho dễ đọc */
+  text-align: left;      /* Căn trái để nhìn rõ cấu trúc */
+}
+
+/* Tự động xuống dòng giữa các ý (a), (b), (c)... */
+#question b, 
+#question span,
+#question p {
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* Tô đậm tiêu đề "Bài tập:" */
+#question strong, 
+#question b:first-child {
+  display: block;
+  color: #00c3ff;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+/* Khu vực kết quả */
+.result-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #00c3ff;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.result-body {
+  background: #11121b;
+  color: #eef2ff;
+  padding: 18px;
+  border-radius: 12px;
+  line-height: 1.7;
+  max-height: 420px;
+  overflow-y: auto;
+  text-align: left;
+  font-size: 15px;
+  word-wrap: break-word; /* tránh tràn dòng */
+}
+
+/* style cho các đoạn / list */
+.result-body p {
+  margin: 8px 0;
+}
+.result-body ol {
+  margin: 8px 0 8px 22px;
+}
+.result-body li {
+  margin: 6px 0;
+}
+.result-body b {
+  color: #9fe8ff; /* bold nhẹ */
+}
+
+/* scroll đẹp */
+.result-body::-webkit-scrollbar { width: 8px; }
+.result-body::-webkit-scrollbar-thumb { background: #333; border-radius: 8px; }
+
+/* Bảng ký hiệu toán học */
+.symbol-panel {
+  background: #f0f8ff;
+  border: 2px solid #008cff;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 15px auto;
+  width: 80%;
+  text-align: left;
+}
+
+.symbol-category {
+  margin-bottom: 10px;
+}
+
+.symbol-category strong {
+  display: block;
+  color: #0055aa;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.symbols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.symbol-btn {
+  padding: 8px 12px;
+  margin: 0;
+  background: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s;
+  min-width: 40px;
+}
+
+.symbol-btn:hover {
+  background: #008cff;
+  color: white;
+  border-color: #0066cc;
+  transform: scale(1.1);
+}
+
+.template-btn {
+  background: #e3f2fd;
+  border: 1px solid #2196F3;
+  font-weight: 600;
+  min-width: 50px;
+}
+
+.template-btn:hover {
+  background: #2196F3;
+}
+
+.preview-box {
+  margin: 15px auto;
+  width: 80%;
+  background: #fff;
+  border: 2px solid #00c3ff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.preview-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 10px 15px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.preview-content {
+  padding: 20px;
+  min-height: 60px;
+  background: #f9f9f9;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.8;
+  text-align: left;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.preview-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.preview-content::-webkit-scrollbar-thumb {
+  background: #00c3ff;
+  border-radius: 10px;
+}
+
+.upload-section {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.upload-option {
+  flex: 1;
+  min-width: 250px;
+  max-width: 400px;
+}
+
+.upload-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.upload-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.image-preview, .file-preview {
+  margin-top: 15px;
+  min-height: 50px;
+  text-align: center;
+}
+
+#chatToggle {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
+  transition: all 0.3s;
+  z-index: 1000;
+}
+
+#chatToggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+}
+
+.chat-tooltip {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  background: #333;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+#chatToggle:hover .chat-tooltip {
+  opacity: 1;
+}
+
+.chat-container {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 380px;
+  max-width: 90vw;
+  height: 500px;
+  max-height: 70vh;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  display: none;
+  flex-direction: column;
+  z-index: 1001;
+  overflow: hidden;
+}
+
+.chat-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px 20px;
+  font-weight: bold;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.chat-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-message {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.message-content {
+  max-width: 80%;
+  padding: 10px 15px;
+  border-radius: 10px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.user-message {
+  justify-content: flex-end;
+}
+
+.user-message .message-content {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-bottom-right-radius: 3px;
+}
+
+.ai-message {
+  justify-content: flex-start;
+}
+
+.ai-message .message-content {
+  background: white;
+  color: #333;
+  border: 1px solid #e0e0e0;
+  border-bottom-left-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 10px;
+}
+
+.chat-input-container {
+  padding: 15px;
+  background: white;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  gap: 10px;
+}
+
+#chatInput {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#chatInput:focus {
+  border-color: #667eea;
+}
+
+.chat-send-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+  margin: 0;
+}
+
+.chat-send-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+@media (max-width: 768px) {
+  .chat-container {
+    width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    bottom: 0;
+    right: 0;
+    border-radius: 0;
+  }
+  
+  #chatToggle {
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+  
+  .upload-section {
+    flex-direction: column;
+  }
+  
+  .upload-option {
+    max-width: 100%;
+  }
+}
+body {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  overflow-x: hidden;
+}
+<style>
+  .khung-den {
+    border: 2px solid black;       /* viền đen */
+    border-radius: 10px;           /* bo góc mềm mại */
+    padding: 15px;                 /* khoảng cách trong khung */
+    margin-bottom: 20px;           /* khoảng cách giữa các khung */
+    background-color: white;       /* nền trắng (giúp nổi bật) */
+    color: black;                  /* chữ đen */
+  }
+
+body::before {
+  content: "";
+  background-image: url('https://png.pngtree.com/background/20250426/original/pngtree-artificial-intelligence-and-machine-learning-concept-picture-image_16462081.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+
+  /* 👇 làm mờ + tối nền */
+  filter: brightness(0.4) blur(2px);
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* 👇 thêm lớp phủ màu mờ xanh nhẹ để có chiều sâu */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 20, 40, 0.3); /* xanh đậm mờ 30% */
+  z-index: -1;
+}
+
+/* 🌑 Tô nền đen, chữ trắng cho tất cả các khung bài */
+#question, 
+.preview-box, 
+.symbol-panel, 
+.result-body, 
+#result,
+.khung-den {
+  background-color: #000000 !important;  /* nền đen */
+  color: #ffffff !important;             /* chữ trắng */
+  border: 2px solid #00c3ff;             /* viền xanh lam nhạt nổi bật */
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 195, 255, 0.3);
+  padding: 20px;
+}
+
+/* 🌟 Làm nổi các tiêu đề bên trong */
+#question h2, 
+#question h3, 
+#question strong, 
+.preview-box h2,
+.symbol-panel strong,
+.result-title {
+  color: #00c3ff !important;  /* xanh lam neon */
+}
+
+/* ✨ Các nút vẫn sáng để dễ bấm */
+button, .upload-btn, .symbol-btn {
+  background: linear-gradient(135deg, #00c3ff, #0066ff);
+  color: white;
+  border: none;
+  transition: all 0.3s;
+}
+
+button:hover, .upload-btn:hover, .symbol-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0,195,255,0.5);
+}
+
+body {
+    background-image: url('https://png.pngtree.com/background/20250426/original/pngtree-artificial-intelligence-and-machine-learning-concept-picture-image_16462081.jpg'); /* hoặc đường dẫn hình ảnh đúng */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  
+  background-repeat: no-repeat;
+}

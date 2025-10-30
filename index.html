@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ôn Thi THPT Bằng AI</title>
+  <link rel="stylesheet" href="style.css">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+</head>
+<body>
+  <h1>Ứng Dụng Ôn Thi THPT Bằng AI</h1>
+
+ <div style="margin-bottom: 15px;">
+  <label for="subject">Chọn môn học:</label>
+  <select id="subject">
+    <option value="toan">Toán 12</option>
+    <option value="ly">Vật Lý 12</option>
+  </select>
+
+  <label for="type" style="margin-left: 10px;">Loại câu hỏi:</label>
+  <select id="type">
+    <option value="tuluan">Tự luận</option>
+    <option value="tracnghiem">Trắc nghiệm</option>
+  </select>
+
+  <label style="margin-left: 10px;">
+    <input type="checkbox" id="includeAnswer"> Bao gồm đáp án
+  </label>
+
+  <button id="generate" style="margin-left: 10px;">Tạo bài tập ngẫu nhiên</button>
+</div>
+
+
+<!-- Phần TỰ LUẬN -->
+<div id="tuluanBox">
+  <div class="symbol-panel">
+    <div class="symbol-category">
+      <strong>Công thức Toán học (LaTeX):</strong>
+      <div class="symbols">
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\frac{a}{b}', 6)" title="Phân số">a/b</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\sqrt{x}', 6)" title="Căn bậc hai">√x</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\sqrt[n]{x}', 7)" title="Căn bậc n">ⁿ√x</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('x^{n}', 3)" title="Lũy thừa">x^n</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('x_{n}', 3)" title="Chỉ số dưới">xₙ</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\int_{a}^{b}', 7)" title="Tích phân">∫ᵇₐ</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\lim_{x \\to a}', 12)" title="Giới hạn">lim</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\sum_{i=1}^{n}', 11)" title="Tổng">∑</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\prod_{i=1}^{n}', 11)" title="Tích">∏</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\vec{v}', 5)" title="Vector">v⃗</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\overline{AB}', 10)" title="Đoạn thẳng">AB̅</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\sin', 4)" title="Sin">sin</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\cos', 4)" title="Cos">cos</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\tan', 4)" title="Tan">tan</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\log_{a}', 6)" title="Logarit">log</button>
+        <button class="symbol-btn template-btn" onclick="insertTemplate('\\ln', 3)" title="Ln">ln</button>
+      </div>
+    </div>
+    <div class="symbol-category">
+      <strong>Ký hiệu Toán học:</strong>
+      <div class="symbols">
+        <button class="symbol-btn" onclick="insertSymbol('√')">√</button>
+        <button class="symbol-btn" onclick="insertSymbol('∫')">∫</button>
+        <button class="symbol-btn" onclick="insertSymbol('∑')">∑</button>
+        <button class="symbol-btn" onclick="insertSymbol('π')">π</button>
+        <button class="symbol-btn" onclick="insertSymbol('α')">α</button>
+        <button class="symbol-btn" onclick="insertSymbol('β')">β</button>
+        <button class="symbol-btn" onclick="insertSymbol('γ')">γ</button>
+        <button class="symbol-btn" onclick="insertSymbol('Δ')">Δ</button>
+        <button class="symbol-btn" onclick="insertSymbol('θ')">θ</button>
+        <button class="symbol-btn" onclick="insertSymbol('λ')">λ</button>
+        <button class="symbol-btn" onclick="insertSymbol('μ')">μ</button>
+        <button class="symbol-btn" onclick="insertSymbol('ω')">ω</button>
+        <button class="symbol-btn" onclick="insertSymbol('∞')">∞</button>
+        <button class="symbol-btn" onclick="insertSymbol('±')">±</button>
+        <button class="symbol-btn" onclick="insertSymbol('≤')">≤</button>
+        <button class="symbol-btn" onclick="insertSymbol('≥')">≥</button>
+        <button class="symbol-btn" onclick="insertSymbol('≠')">≠</button>
+        <button class="symbol-btn" onclick="insertSymbol('≈')">≈</button>
+        <button class="symbol-btn" onclick="insertSymbol('×')">×</button>
+        <button class="symbol-btn" onclick="insertSymbol('÷')">÷</button>
+        <button class="symbol-btn" onclick="insertSymbol('²')">²</button>
+        <button class="symbol-btn" onclick="insertSymbol('³')">³</button>
+        <button class="symbol-btn" onclick="insertSymbol('∂')">∂</button>
+        <button class="symbol-btn" onclick="insertSymbol('∇')">∇</button>
+      </div>
+    </div>
+    <div class="symbol-category">
+      <strong>Vật lý:</strong>
+      <div class="symbols">
+        <button class="symbol-btn" onclick="insertSymbol('Ω')">Ω</button>
+        <button class="symbol-btn" onclick="insertSymbol('φ')">φ</button>
+        <button class="symbol-btn" onclick="insertSymbol('ρ')">ρ</button>
+        <button class="symbol-btn" onclick="insertSymbol('σ')">σ</button>
+        <button class="symbol-btn" onclick="insertSymbol('τ')">τ</button>
+        <button class="symbol-btn" onclick="insertSymbol('ε')">ε</button>
+        <button class="symbol-btn" onclick="insertSymbol('°')">°</button>
+      </div>
+    </div>
+    <div class="symbol-category">
+      <strong>Khác:</strong>
+      <div class="symbols">
+        <button class="symbol-btn" onclick="insertSymbol('→')">→</button>
+        <button class="symbol-btn" onclick="insertSymbol('⇒')">⇒</button>
+        <button class="symbol-btn" onclick="insertSymbol('⇔')">⇔</button>
+        <button class="symbol-btn" onclick="insertSymbol('∈')">∈</button>
+        <button class="symbol-btn" onclick="insertSymbol('∉')">∉</button>
+        <button class="symbol-btn" onclick="insertSymbol('⊂')">⊂</button>
+        <button class="symbol-btn" onclick="insertSymbol('⊃')">⊃</button>
+        <button class="symbol-btn" onclick="insertSymbol('∪')">∪</button>
+        <button class="symbol-btn" onclick="insertSymbol('∩')">∩</button>
+      </div>
+    </div>
+  </div>
+  <div style="margin: 10px auto; width: 80%; text-align: left; font-size: 13px; color: #555;">
+    💡 <strong>Hướng dẫn:</strong> Click vào công thức để chèn. Với công thức LaTeX (dòng đầu), hãy thay thế chữ cái (a, b, x, n...) bằng giá trị của bạn. Công thức sẽ hiển thị bên dưới.
+  </div>
+  <textarea id="answer" placeholder="Nhập câu trả lời của bạn...&#10;Ví dụ: Đáp án là $\frac{3}{4}$ hoặc $x^{2} + y^{2} = r^{2}$&#10;&#10;LƯU Ý: Bao bọc công thức LaTeX trong dấu $ ... $ để hiển thị đẹp"></textarea>
+  
+  <div class="preview-box">
+    <div class="preview-header">📐 Xem trước công thức:</div>
+    <div id="preview" class="preview-content">Gõ công thức có dấu $ để xem preview...</div>
+  </div>
+  
+  <button onclick="submitAnswer()">Nộp bài (Văn bản)</button>
+
+  <div style="margin: 20px auto; padding: 20px; background: #fff; border-radius: 10px; width: 80%;">
+    <h3 style="color: #0055aa; margin-bottom: 15px;">📸 Hoặc nộp bài bằng hình ảnh / file</h3>
+    
+    <div class="upload-section">
+      <div class="upload-option">
+        <label class="upload-label">
+          <input type="file" id="imageUpload" accept="image/*" style="display: none;" onchange="handleImageUpload(this)">
+          <div class="upload-btn">
+            📷 Chọn ảnh bài làm
+          </div>
+        </label>
+        <div id="imagePreview" class="image-preview"></div>
+        <button id="submitImageBtn" onclick="submitImage()" style="display: none;">Nộp bài (Hình ảnh)</button>
+      </div>
+
+      <div class="upload-option">
+        <label class="upload-label">
+          <input type="file" id="fileUpload" accept=".txt,.docx,image/*" style="display: none;" onchange="handleFileUpload(this)">
+          <div class="upload-btn">
+            📄 Chọn file bài làm
+          </div>
+        </label>
+        <div id="filePreview" class="file-preview"></div>
+        <p style="font-size: 12px; color: #666; margin-top: 10px;">Hỗ trợ: .txt, .docx, hình ảnh</p>
+        <button id="submitFileBtn" onclick="submitFile()" style="display: none;">Nộp bài (File)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Phần TRẮC NGHIỆM -->
+<div id="tracnghiemBox" style="display:none;">
+  <div id="choices">
+    <label><input type="radio" name="choice" value="A"> A</label><br>
+    <label><input type="radio" name="choice" value="B"> B</label><br>
+    <label><input type="radio" name="choice" value="C"> C</label><br>
+    <label><input type="radio" name="choice" value="D"> D</label><br>
+  </div>
+  <button onclick="submitChoice()">Nộp bài</button>
+</div>
+
+
+  <div id="question"></div>
+  <div id="result"></div>
+
+<!-- Chatbox với giáo viên AI -->
+<div id="chatToggle" onclick="toggleChat()">
+  💬
+  <span class="chat-tooltip">Chat với giáo viên AI</span>
+</div>
+
+<div id="chatBox" class="chat-container">
+  <div class="chat-header">
+    <span>💬 Chat với Giáo viên AI</span>
+    <button class="chat-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-message ai-message">
+      <div class="message-content">
+        <strong>Giáo viên AI:</strong> Xin chào! Tôi có thể giúp gì cho bạn? 😊
+      </div>
+    </div>
+  </div>
+  <div class="chat-input-container">
+    <textarea id="chatInput" placeholder="Nhập câu hỏi của bạn..." rows="2"></textarea>
+    <button onclick="sendChatMessage()" class="chat-send-btn">Gửi ➤</button>
+  </div>
+</div>
+
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<script src="script.js"></script>
+</body>
+</html>
